@@ -8,7 +8,14 @@ from schemas.schem import User as shem_user
 from starlette.status import HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_401_UNAUTHORIZED
 import hashlib
 
-
+def vhod(db:Session,user:shem_user):
+    if not db.scalar(select(User).where(User.name == user.name)) and db.scalar(select(User).where(User.hashed_password == user.hashed_password)) :
+        raise HTTPException(
+            status_code=HTTP_400_BAD_REQUEST,
+            detail='пароль или логин не валидны'
+        )
+    else:
+        return 'вы вошли'
 def create(db:Session,user:shem_user):
     if db.scalar(select(User).where(User.name == user.name)):
         raise HTTPException(

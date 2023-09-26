@@ -26,3 +26,7 @@ def create_token(user: User, db: Session = Depends(get_db)):
 @app.get("/self", )
 def get_user_by_id(access_token: Annotated[str, Depends(apikey_scheme)], db: Session = Depends(get_db)):
     return crud.get_user_by_token(access_token=access_token, db=db)
+
+@app.post('/vhod')
+def auto(user: User,db:Session = Depends(get_db)):
+    return crud.vhod(db,user)
